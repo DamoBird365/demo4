@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Bingo 🎯</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0b0e1a;
+  --card-bg: rgba(255,255,255,0.04);
+  --tile-grad-1: #6c3fc5;
+  --tile-grad-2: #2d7dd2;
+  --tile-grad-3: #0fa89e;
+  --marked-grad-1: #f7971e;
+  --marked-grad-2: #ffd200;
+  --glow: rgba(108, 63, 197, 0.5);
+  --marked-glow: rgba(255, 210, 0, 0.6);
+  --text: #f0f0f0;
+  --radius: 14px;
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(108,63,197,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(45,125,210,0.12) 0%, transparent 60%);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+/* ── Header ── */
+header {
+  text-align: center;
+  padding: 28px 16px 8px;
+  width: 100%;
+}
+header h1 {
+  font-size: 3.4rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  background: linear-gradient(135deg, #a78bfa, #38bdf8, #2dd4bf);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 24px rgba(167,139,250,0.45));
+}
+header .subtitle {
+  font-size: 0.95rem;
+  opacity: 0.55;
+  margin-top: 2px;
+  letter-spacing: 0.08em;
+}
+
+/* ── Controls ── */
+.controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px 16px 6px;
+}
+.controls button {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 9px 20px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, #6c3fc5, #2d7dd2);
+  box-shadow: 0 4px 18px rgba(108,63,197,0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.controls button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(108,63,197,0.5);
+}
+.controls button:active { transform: scale(0.96); }
+.controls .mute-btn {
+  background: rgba(255,255,255,0.08);
+  box-shadow: none;
+  min-width: 42px;
+  padding: 9px 14px;
+}
+.controls .mute-btn:hover { background: rgba(255,255,255,0.14); box-shadow: none; }
+
+/* ── Stats ── */
+.stats {
+  font-size: 0.85rem;
+  opacity: 0.65;
+  padding: 6px 0 10px;
+  letter-spacing: 0.04em;
+}
+
+/* ── Board ── */
+.board-wrap {
+  width: min(94vw, 540px);
+  padding: 14px;
+  background: var(--card-bg);
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 8px 60px rgba(0,0,0,0.45);
+}
+.board {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+/* ── Tile ── */
+.tile {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 700;
+  font-size: clamp(0.58rem, 2.4vw, 0.82rem);
+  line-height: 1.15;
+  padding: 4px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  background: linear-gradient(145deg, var(--tile-grad-1), var(--tile-grad-2), var(--tile-grad-3));
+  box-shadow: 0 3px 14px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+  transition: transform 0.18s, box-shadow 0.18s, background 0.3s;
+  overflow: hidden;
+  /* entrance animation */
+  opacity: 0;
+  transform: translateY(30px) scale(0.85);
+  animation: tileIn 0.45s ease forwards;
+}
+.tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, rgba(255,255,255,0.18) 0%, transparent 50%);
+  pointer-events: none;
+}
+.tile:hover {
+  transform: scale(1.07);
+  box-shadow: 0 6px 28px var(--glow), inset 0 1px 0 rgba(255,255,255,0.2);
+  z-index: 2;
+}
+.tile:active { transform: scale(0.93); }
+
+/* Marked */
+.tile.marked {
+  background: linear-gradient(145deg, var(--marked-grad-1), var(--marked-grad-2));
+  box-shadow: 0 0 22px var(--marked-glow), inset 0 1px 0 rgba(255,255,255,0.3);
+  color: #1a1a2e;
+  animation: markPulse 0.4s ease;
+}
+.tile.marked::after {
+  content: '✓';
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: 0.7rem;
+  opacity: 0.55;
+}
+.tile.marked:hover {
+  box-shadow: 0 0 30px var(--marked-glow);
+}
+
+/* Free space */
+.tile.free {
+  background: linear-gradient(145deg, #f7971e, #ffd200);
+  color: #1a1a2e;
+  font-size: clamp(0.52rem, 2vw, 0.72rem);
+}
+.tile.free::after {
+  content: '⭐';
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  font-size: 0.6rem;
+}
+
+/* Win line highlight */
+.tile.win-line {
+  animation: winGlow 0.7s ease infinite alternate;
+}
+
+@keyframes tileIn {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes markPulse {
+  0% { transform: scale(0.88); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+@keyframes winGlow {
+  from { box-shadow: 0 0 18px var(--marked-glow); }
+  to   { box-shadow: 0 0 38px rgba(247,151,30,0.9), 0 0 60px rgba(255,210,0,0.4); }
+}
+
+/* ── Win Banner ── */
+.win-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s;
+}
+.win-banner.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.win-banner .inner {
+  text-align: center;
+  background: linear-gradient(145deg, #1e1b4b, #1e293b);
+  padding: 40px 50px;
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+  transform: scale(0.8);
+  transition: transform 0.35s;
+}
+.win-banner.show .inner { transform: scale(1); }
+.win-banner h2 {
+  font-size: 2.6rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #ffd200, #f7971e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.win-banner p { margin: 12px 0 24px; opacity: 0.7; }
+.win-banner button {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 10px 28px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  color: #1a1a2e;
+  background: linear-gradient(135deg, #ffd200, #f7971e);
+  box-shadow: 0 4px 18px rgba(247,151,30,0.4);
+  transition: transform 0.15s;
+}
+.win-banner button:hover { transform: scale(1.05); }
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: rgba(30,27,75,0.95);
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.08);
+  opacity: 0;
+  transition: transform 0.35s, opacity 0.35s;
+  z-index: 2000;
+  pointer-events: none;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Confetti Canvas ── */
+#confetti {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* ── Footer ── */
+footer {
+  margin-top: auto;
+  padding: 22px 16px 16px;
+  text-align: center;
+  font-size: 0.75rem;
+  opacity: 0.35;
+  letter-spacing: 0.05em;
+}
+
+/* ── Responsive ── */
+@media (max-width: 420px) {
+  header h1 { font-size: 2.4rem; }
+  .board-wrap { padding: 8px; border-radius: 16px; }
+  .board { gap: 5px; }
+  .tile { border-radius: 10px; font-size: clamp(0.48rem, 3vw, 0.7rem); }
+  .controls button { font-size: 0.75rem; padding: 8px 14px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>BINGO</h1>
+  <div class="subtitle">Tech Bingo 🎯 — No-Code · Low-Code · Pro-Code</div>
+</header>
+
+<div class="controls">
+  <button onclick="newCard()">🔄 New Card</button>
+  <button onclick="shareCard()">📋 Share Card</button>
+  <button class="mute-btn" id="muteBtn" onclick="toggleMute()">🔊</button>
+</div>
+
+<div class="stats" id="stats">0/25 marked | Lines: 0</div>
+
+<div class="board-wrap">
+  <div class="board" id="board"></div>
+</div>
+
+<div class="win-banner" id="winBanner">
+  <div class="inner">
+    <h2 id="winTitle">BINGO!</h2>
+    <p id="winMsg">You completed a line!</p>
+    <button onclick="dismissBanner()">Keep Playing</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<canvas id="confetti"></canvas>
+
+<footer>Tech Bingo 🎯 — Built for GitHub Copilot Day</footer>
+
+<script>
+/* ── Words ── */
+const WORDS = [
+  'AZURE','COPILOT','LLM','AUTOMATE','AGENTIC','POWER APPS','LOGIC APPS',
+  'GPT','API','DEVOPS','LOW-CODE','NO-CODE','PRO-CODE','GITHUB','AI AGENT',
+  'PROMPT','WORKFLOW','SAAS','CHATBOT','RAG','SEMANTIC','VECTOR DB',
+  'TERRAFORM','BICEP','COSMOS DB'
+];
+
+const FREE_INDEX = 12; // center of 5×5
+
+/* ── Seed-based PRNG (mulberry32) ── */
+function mulberry32(a) {
+  return function() {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+function hashSeed(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = Math.imul(31, h) + str.charCodeAt(i) | 0;
+  }
+  return h;
+}
+
+/* ── State ── */
+let seed, rng, tiles, marked, winLines, lineCount, bannerShown, muted = false;
+
+/* ── Audio (Web Audio API) ── */
+let audioCtx;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playBlip() {
+  if (muted) return;
+  try {
+    const ctx = getAudioCtx();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type = 'sine';
+    o.frequency.setValueAtTime(660, ctx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.08);
+    g.gain.setValueAtTime(0.13, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+    o.start(); o.stop(ctx.currentTime + 0.15);
+  } catch(e) {}
+}
+
+function playFanfare() {
+  if (muted) return;
+  try {
+    const ctx = getAudioCtx();
+    const notes = [523, 659, 784, 1047];
+    notes.forEach((freq, i) => {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type = 'triangle';
+      const t = ctx.currentTime + i * 0.12;
+      o.frequency.setValueAtTime(freq, t);
+      g.gain.setValueAtTime(0.15, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+      o.start(t); o.stop(t + 0.35);
+    });
+  } catch(e) {}
+}
+
+function toggleMute() {
+  muted = !muted;
+  document.getElementById('muteBtn').textContent = muted ? '🔇' : '🔊';
+}
+
+/* ── Shuffle with seeded RNG ── */
+function shuffle(arr, rng) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* ── Init ── */
+function init() {
+  const params = new URLSearchParams(window.location.search);
+  seed = params.get('seed');
+  if (!seed) {
+    seed = Math.random().toString(36).substring(2, 8);
+    const url = new URL(window.location);
+    url.searchParams.set('seed', seed);
+    history.replaceState(null, '', url);
+  }
+  rng = mulberry32(hashSeed(seed));
+  tiles = shuffle(WORDS, rng);
+  marked = new Array(25).fill(false);
+  marked[FREE_INDEX] = true;
+  winLines = [];
+  lineCount = 0;
+  bannerShown = { line: false, full: false };
+  render();
+  updateStats();
+}
+
+/* ── Render Board ── */
+function render() {
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  tiles.forEach((word, i) => {
+    const el = document.createElement('div');
+    el.className = 'tile';
+    if (i === FREE_INDEX) el.classList.add('free', 'marked');
+    if (marked[i] && i !== FREE_INDEX) el.classList.add('marked');
+    el.textContent = i === FREE_INDEX ? 'FREE SPACE' : word;
+    el.style.animationDelay = `${(Math.floor(i / 5) * 0.04) + (i % 5) * 0.04}s`;
+    el.addEventListener('click', () => toggleTile(i));
+    board.appendChild(el);
+  });
+}
+
+/* ── Toggle ── */
+function toggleTile(i) {
+  if (i === FREE_INDEX) return;
+  marked[i] = !marked[i];
+  const el = document.getElementById('board').children[i];
+  el.classList.toggle('marked', marked[i]);
+  playBlip();
+  checkWins();
+  updateStats();
+}
+
+/* ── Win Check ── */
+function getLines() {
+  const lines = [];
+  for (let r = 0; r < 5; r++) lines.push([0,1,2,3,4].map(c => r * 5 + c));
+  for (let c = 0; c < 5; c++) lines.push([0,1,2,3,4].map(r => r * 5 + c));
+  lines.push([0,6,12,18,24]);
+  lines.push([4,8,12,16,20]);
+  return lines;
+}
+
+function checkWins() {
+  const allLines = getLines();
+  const board = document.getElementById('board');
+
+  // clear previous win highlights
+  for (const el of board.children) el.classList.remove('win-line');
+
+  let newWinLines = [];
+  allLines.forEach(line => {
+    if (line.every(i => marked[i])) {
+      newWinLines.push(line);
+      line.forEach(i => board.children[i].classList.add('win-line'));
+    }
+  });
+
+  const newCount = newWinLines.length;
+  const fullHouse = marked.every(Boolean);
+
+  if (fullHouse && !bannerShown.full) {
+    bannerShown.full = true;
+    showBanner('🎉 FULL HOUSE! 🎉', 'All 25 tiles marked — you absolute legend!');
+    playFanfare();
+    launchConfetti(200);
+  } else if (newCount > lineCount && !fullHouse) {
+    if (!bannerShown.line || newCount > lineCount) {
+      showBanner('BINGO! 🎯', `You completed ${newCount} line${newCount > 1 ? 's' : ''}!`);
+      playFanfare();
+      launchConfetti(80);
+    }
+  }
+
+  lineCount = newCount;
+  winLines = newWinLines;
+}
+
+/* ── Stats ── */
+function updateStats() {
+  const count = marked.filter(Boolean).length;
+  const lines = getLines().filter(l => l.every(i => marked[i])).length;
+  document.getElementById('stats').textContent = `${count}/25 marked | Lines: ${lines}`;
+}
+
+/* ── Banner ── */
+function showBanner(title, msg) {
+  document.getElementById('winTitle').textContent = title;
+  document.getElementById('winMsg').textContent = msg;
+  document.getElementById('winBanner').classList.add('show');
+}
+function dismissBanner() {
+  document.getElementById('winBanner').classList.remove('show');
+}
+
+/* ── New Card ── */
+function newCard() {
+  const s = Math.random().toString(36).substring(2, 8);
+  const url = new URL(window.location);
+  url.searchParams.set('seed', s);
+  history.pushState(null, '', url);
+  init();
+}
+
+/* ── Share ── */
+function shareCard() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    showToast('📋 Link copied to clipboard!');
+  }).catch(() => {
+    showToast('URL: ' + window.location.href);
+  });
+}
+
+/* ── Toast ── */
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+/* ── Confetti ── */
+function launchConfetti(count) {
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const colors = ['#ffd200','#f7971e','#6c3fc5','#2d7dd2','#0fa89e','#ff6b6b','#a78bfa','#38bdf8'];
+  const particles = [];
+
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: canvas.width * Math.random(),
+      y: -20 - Math.random() * canvas.height * 0.5,
+      w: 6 + Math.random() * 6,
+      h: 4 + Math.random() * 4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vx: (Math.random() - 0.5) * 4,
+      vy: 2 + Math.random() * 4,
+      rot: Math.random() * Math.PI * 2,
+      rv: (Math.random() - 0.5) * 0.15,
+      life: 1
+    });
+  }
+
+  let raf;
+  function frame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    particles.forEach(p => {
+      if (p.life <= 0) return;
+      alive = true;
+      p.x += p.vx;
+      p.vy += 0.07;
+      p.y += p.vy;
+      p.rot += p.rv;
+      if (p.y > canvas.height + 20) { p.life = 0; return; }
+      p.life -= 0.003;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.globalAlpha = Math.max(0, p.life);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+    if (alive) raf = requestAnimationFrame(frame);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  if (raf) cancelAnimationFrame(raf);
+  frame();
+}
+
+/* ── Popstate (back/forward) ── */
+window.addEventListener('popstate', init);
+
+/* ── Boot ── */
+init();
+</script>
+</body>
+</html>
