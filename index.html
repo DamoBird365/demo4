@@ -298,48 +298,6 @@ header .subtitle {
     inset 0 1px 0 rgba(255,255,255,0.12);
 }
 
-/* ── Free Space — Premium Gold ── */
-.tile.free {
-  background: linear-gradient(145deg, #d97706, #fbbf24, #fde68a, #f59e0b);
-  border-color: rgba(251,191,36,0.4);
-  color: #451a03;
-  font-size: clamp(0.52rem, 2vw, 0.72rem);
-  font-weight: 900;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.3);
-  box-shadow:
-    0 0 25px rgba(251,191,36,0.4),
-    0 4px 16px rgba(0,0,0,0.35),
-    inset 0 2px 0 rgba(255,255,255,0.4),
-    inset 0 -2px 4px rgba(0,0,0,0.15);
-  animation: tileIn 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards, freeShimmer 3s ease-in-out infinite;
-}
-.tile.free::before {
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.45) 0%,
-    rgba(255,255,255,0.15) 25%,
-    transparent 50%,
-    transparent 100%
-  );
-}
-.tile.free::after {
-  content: '⭐';
-  position: absolute;
-  top: 4px;
-  right: 5px;
-  font-size: 0.6rem;
-  background: none;
-  height: auto;
-  bottom: auto;
-  left: auto;
-  border-radius: 0;
-  opacity: 1;
-}
-@keyframes freeShimmer {
-  0%, 100% { box-shadow: 0 0 25px rgba(251,191,36,0.4), 0 4px 16px rgba(0,0,0,0.35), inset 0 2px 0 rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.15); }
-  50%      { box-shadow: 0 0 40px rgba(251,191,36,0.6), 0 4px 20px rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.5), inset 0 -2px 4px rgba(0,0,0,0.15); }
-}
-
 /* ── Win Line Highlight ── */
 .tile.win-line {
   animation: winGlow 0.8s ease infinite alternate;
@@ -558,8 +516,6 @@ const WORDS = [
   'TERRAFORM','BICEP','COSMOS DB'
 ];
 
-const FREE_INDEX = 12; // center of 5×5
-
 /* ── Seed-based PRNG (mulberry32) ── */
 function mulberry32(a) {
   return function() {
@@ -651,7 +607,6 @@ function init() {
   rng = mulberry32(hashSeed(seed));
   tiles = shuffle(WORDS, rng);
   marked = new Array(25).fill(false);
-  marked[FREE_INDEX] = true;
   winLines = [];
   lineCount = 0;
   bannerShown = { line: false, full: false };
@@ -666,9 +621,8 @@ function render() {
   tiles.forEach((word, i) => {
     const el = document.createElement('div');
     el.className = 'tile';
-    if (i === FREE_INDEX) el.classList.add('free', 'marked');
-    if (marked[i] && i !== FREE_INDEX) el.classList.add('marked');
-    el.textContent = i === FREE_INDEX ? 'FREE SPACE' : word;
+    if (marked[i]) el.classList.add('marked');
+    el.textContent = word;
     el.style.animationDelay = `${(Math.floor(i / 5) * 0.04) + (i % 5) * 0.04}s`;
     el.addEventListener('click', () => toggleTile(i));
     board.appendChild(el);
@@ -677,7 +631,6 @@ function render() {
 
 /* ── Toggle ── */
 function toggleTile(i) {
-  if (i === FREE_INDEX) return;
   marked[i] = !marked[i];
   const el = document.getElementById('board').children[i];
   const spinClass = marked[i] ? 'spin-in' : 'spin-out';
