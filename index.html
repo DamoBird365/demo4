@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tech Bingo 🎯</title>
+<title>Tech Bingo ­ƒÄ»</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
 
 html { font-size: 16px; }
 
-/* ── Animated Background ── */
+/* ÔöÇÔöÇ Animated Background ÔöÇÔöÇ */
 body {
   font-family: 'Poppins', sans-serif;
   background: var(--bg);
@@ -65,7 +65,7 @@ body::before {
   pointer-events: none;
 }
 
-/* ── Header ── */
+/* ÔöÇÔöÇ Header ÔöÇÔöÇ */
 header {
   text-align: center;
   padding: 32px 16px 8px;
@@ -96,7 +96,7 @@ header .subtitle {
   font-weight: 400;
 }
 
-/* ── Controls ── */
+/* ÔöÇÔöÇ Controls ÔöÇÔöÇ */
 .controls {
   display: flex;
   gap: 10px;
@@ -149,7 +149,7 @@ header .subtitle {
   box-shadow: 0 4px 16px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.12);
 }
 
-/* ── Stats ── */
+/* ÔöÇÔöÇ Stats ÔöÇÔöÇ */
 .stats {
   font-size: 0.82rem;
   opacity: 0.55;
@@ -158,7 +158,7 @@ header .subtitle {
   font-weight: 400;
 }
 
-/* ── Board ── */
+/* ÔöÇÔöÇ Board ÔöÇÔöÇ */
 .board-wrap {
   width: min(94vw, 540px);
   padding: 16px;
@@ -187,7 +187,7 @@ header .subtitle {
   gap: 8px;
 }
 
-/* ── Tile ── */
+/* ÔöÇÔöÇ Tile ÔöÇÔöÇ */
 .tile {
   position: relative;
   aspect-ratio: 1;
@@ -218,7 +218,7 @@ header .subtitle {
   text-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
-/* Glass shine — diagonal sweep */
+/* Glass shine ÔÇö diagonal sweep */
 .tile::before {
   content: '';
   position: absolute;
@@ -235,7 +235,7 @@ header .subtitle {
   z-index: 1;
 }
 
-/* Secondary shine — bottom reflection */
+/* Secondary shine ÔÇö bottom reflection */
 .tile::after {
   content: '';
   position: absolute;
@@ -261,7 +261,7 @@ header .subtitle {
   transition-duration: 0.08s;
 }
 
-/* ── Marked Tile ── */
+/* ÔöÇÔöÇ Marked Tile ÔöÇÔöÇ */
 .tile.marked {
   background: linear-gradient(145deg, #3a3a3a, #4a4a4a, #3d3d3d);
   border-color: rgba(255,255,255,0.08);
@@ -279,7 +279,7 @@ header .subtitle {
   animation: spinOut 0.6s ease-in-out;
 }
 .tile.marked::after {
-  content: '✓';
+  content: 'Ô£ô';
   position: absolute;
   top: 4px;
   right: 6px;
@@ -298,7 +298,7 @@ header .subtitle {
     inset 0 1px 0 rgba(255,255,255,0.12);
 }
 
-/* ── Win Line Highlight ── */
+/* ÔöÇÔöÇ Win Line Highlight ÔöÇÔöÇ */
 .tile.win-line {
   animation: winGlow 0.8s ease infinite alternate;
   border-color: rgba(251,191,36,0.5);
@@ -332,7 +332,7 @@ header .subtitle {
   }
 }
 
-/* ── Win Banner ── */
+/* ÔöÇÔöÇ Win Banner ÔöÇÔöÇ */
 .win-banner {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -417,7 +417,7 @@ header .subtitle {
   box-shadow: 0 8px 32px rgba(251,191,36,0.5);
 }
 
-/* ── Toast ── */
+/* ÔöÇÔöÇ Toast ÔöÇÔöÇ */
 .toast {
   position: fixed;
   bottom: 28px;
@@ -443,7 +443,7 @@ header .subtitle {
   transform: translateX(-50%) translateY(0);
 }
 
-/* ── Confetti Canvas ── */
+/* ÔöÇÔöÇ Confetti Canvas ÔöÇÔöÇ */
 #confetti {
   position: fixed;
   top: 0; left: 0;
@@ -452,7 +452,7 @@ header .subtitle {
   z-index: 999;
 }
 
-/* ── Footer ── */
+/* ÔöÇÔöÇ Footer ÔöÇÔöÇ */
 footer {
   margin-top: auto;
   padding: 24px 16px 18px;
@@ -462,7 +462,7 @@ footer {
   letter-spacing: 0.06em;
 }
 
-/* ── Responsive ── */
+/* ÔöÇÔöÇ Responsive ÔöÇÔöÇ */
 @media (max-width: 420px) {
   header h1 { font-size: 2.6rem; }
   .board-wrap { padding: 8px; border-radius: 16px; }
@@ -478,13 +478,13 @@ footer {
 
 <header>
   <h1>BINGO</h1>
-  <div class="subtitle">Tech Bingo 🎯 — No-Code · Low-Code · Pro-Code</div>
+  <div class="subtitle">Tech Bingo ­ƒÄ» ÔÇö No-Code ┬À Low-Code ┬À Pro-Code</div>
 </header>
 
 <div class="controls">
-  <button onclick="newCard()">🔄 New Card</button>
-  <button onclick="shareCard()">📋 Share Card</button>
-  <button class="mute-btn" id="muteBtn" onclick="toggleMute()">🔊</button>
+  <button onclick="newCard()">­ƒöä New Card</button>
+  <button onclick="shareCard()">­ƒôï Share Card</button>
+  <button class="mute-btn" id="muteBtn" onclick="toggleMute()">­ƒöè</button>
 </div>
 
 <div class="stats" id="stats">0/25 marked | Lines: 0</div>
@@ -505,10 +505,10 @@ footer {
 
 <canvas id="confetti"></canvas>
 
-<footer>Tech Bingo 🎯 — Built for GitHub Copilot Day</footer>
+<footer>Tech Bingo ­ƒÄ» ÔÇö Built for GitHub Copilot Day</footer>
 
 <script>
-/* ── Words ── */
+/* ÔöÇÔöÇ Words ÔöÇÔöÇ */
 const WORDS = [
   'AZURE','COPILOT','LLM','AUTOMATE','AGENTIC','POWER APPS','LOGIC APPS',
   'GPT','API','DEVOPS','LOW-CODE','NO-CODE','PRO-CODE','GITHUB','AI AGENT',
@@ -516,7 +516,7 @@ const WORDS = [
   'TERRAFORM','BICEP','COSMOS DB'
 ];
 
-/* ── Seed-based PRNG (mulberry32) ── */
+/* ÔöÇÔöÇ Seed-based PRNG (mulberry32) ÔöÇÔöÇ */
 function mulberry32(a) {
   return function() {
     a |= 0; a = a + 0x6D2B79F5 | 0;
@@ -534,10 +534,10 @@ function hashSeed(str) {
   return h;
 }
 
-/* ── State ── */
+/* ÔöÇÔöÇ State ÔöÇÔöÇ */
 let seed, rng, tiles, marked, winLines, lineCount, bannerShown, muted = false;
 
-/* ── Audio (Web Audio API) ── */
+/* ÔöÇÔöÇ Audio (Web Audio API) ÔöÇÔöÇ */
 let audioCtx;
 function getAudioCtx() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -581,10 +581,10 @@ function playFanfare() {
 
 function toggleMute() {
   muted = !muted;
-  document.getElementById('muteBtn').textContent = muted ? '🔇' : '🔊';
+  document.getElementById('muteBtn').textContent = muted ? '­ƒöç' : '­ƒöè';
 }
 
-/* ── Shuffle with seeded RNG ── */
+/* ÔöÇÔöÇ Shuffle with seeded RNG ÔöÇÔöÇ */
 function shuffle(arr, rng) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -594,7 +594,7 @@ function shuffle(arr, rng) {
   return a;
 }
 
-/* ── Init ── */
+/* ÔöÇÔöÇ Init ÔöÇÔöÇ */
 function init() {
   const params = new URLSearchParams(window.location.search);
   seed = params.get('seed');
@@ -614,7 +614,7 @@ function init() {
   updateStats();
 }
 
-/* ── Render Board ── */
+/* ÔöÇÔöÇ Render Board ÔöÇÔöÇ */
 function render() {
   const board = document.getElementById('board');
   board.innerHTML = '';
@@ -629,7 +629,7 @@ function render() {
   });
 }
 
-/* ── Toggle ── */
+/* ÔöÇÔöÇ Toggle ÔöÇÔöÇ */
 function toggleTile(i) {
   marked[i] = !marked[i];
   const el = document.getElementById('board').children[i];
@@ -647,7 +647,7 @@ function toggleTile(i) {
   updateStats();
 }
 
-/* ── Win Check ── */
+/* ÔöÇÔöÇ Win Check ÔöÇÔöÇ */
 function getLines() {
   const lines = [];
   for (let r = 0; r < 5; r++) lines.push([0,1,2,3,4].map(c => r * 5 + c));
@@ -677,12 +677,12 @@ function checkWins() {
 
   if (fullHouse && !bannerShown.full) {
     bannerShown.full = true;
-    showBanner('🎉 FULL HOUSE! 🎉', 'All 25 tiles marked — you absolute legend!');
+    showBanner('­ƒÄë FULL HOUSE! ­ƒÄë', 'All 25 tiles marked ÔÇö you absolute legend!');
     playFanfare();
     launchConfetti(200);
   } else if (newCount > lineCount && !fullHouse) {
     if (!bannerShown.line || newCount > lineCount) {
-      showBanner('BINGO! 🎯', `You completed ${newCount} line${newCount > 1 ? 's' : ''}!`);
+      showBanner('BINGO! ­ƒÄ»', `You completed ${newCount} line${newCount > 1 ? 's' : ''}!`);
       playFanfare();
       launchConfetti(80);
     }
@@ -692,14 +692,14 @@ function checkWins() {
   winLines = newWinLines;
 }
 
-/* ── Stats ── */
+/* ÔöÇÔöÇ Stats ÔöÇÔöÇ */
 function updateStats() {
   const count = marked.filter(Boolean).length;
   const lines = getLines().filter(l => l.every(i => marked[i])).length;
   document.getElementById('stats').textContent = `${count}/25 marked | Lines: ${lines}`;
 }
 
-/* ── Banner ── */
+/* ÔöÇÔöÇ Banner ÔöÇÔöÇ */
 function showBanner(title, msg) {
   document.getElementById('winTitle').textContent = title;
   document.getElementById('winMsg').textContent = msg;
@@ -709,7 +709,7 @@ function dismissBanner() {
   document.getElementById('winBanner').classList.remove('show');
 }
 
-/* ── New Card ── */
+/* ÔöÇÔöÇ New Card ÔöÇÔöÇ */
 function newCard() {
   const s = Math.random().toString(36).substring(2, 8);
   const url = new URL(window.location);
@@ -718,16 +718,16 @@ function newCard() {
   init();
 }
 
-/* ── Share ── */
+/* ÔöÇÔöÇ Share ÔöÇÔöÇ */
 function shareCard() {
   navigator.clipboard.writeText(window.location.href).then(() => {
-    showToast('📋 Link copied to clipboard!');
+    showToast('­ƒôï Link copied to clipboard!');
   }).catch(() => {
     showToast('URL: ' + window.location.href);
   });
 }
 
-/* ── Toast ── */
+/* ÔöÇÔöÇ Toast ÔöÇÔöÇ */
 let toastTimer;
 function showToast(msg) {
   const el = document.getElementById('toast');
@@ -737,7 +737,7 @@ function showToast(msg) {
   toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
 }
 
-/* ── Confetti ── */
+/* ÔöÇÔöÇ Confetti ÔöÇÔöÇ */
 function launchConfetti(count) {
   const canvas = document.getElementById('confetti');
   const ctx = canvas.getContext('2d');
@@ -800,10 +800,10 @@ function launchConfetti(count) {
   frame();
 }
 
-/* ── Popstate (back/forward) ── */
+/* ÔöÇÔöÇ Popstate (back/forward) ÔöÇÔöÇ */
 window.addEventListener('popstate', init);
 
-/* ── Floating Particles ── */
+/* ÔöÇÔöÇ Floating Particles ÔöÇÔöÇ */
 (function initParticles() {
   const canvas = document.getElementById('particles');
   const ctx = canvas.getContext('2d');
@@ -857,9 +857,8 @@ window.addEventListener('popstate', init);
   draw();
 })();
 
-/* ── Boot ── */
+/* ÔöÇÔöÇ Boot ÔöÇÔöÇ */
 init();
 </script>
 </body>
 </html>
-
